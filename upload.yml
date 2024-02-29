@@ -1,0 +1,14 @@
+
+---
+
+- name: install project requirements
+  hosts: scrapyd
+  tasks:
+
+    - name: upload requirements.txt
+      copy:
+        src: requirements.txt 
+        dest: /root
+    
+    - name: install requirements.txt
+      shell: pip install -r requirements.txt

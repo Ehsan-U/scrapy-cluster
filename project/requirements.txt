@@ -1,0 +1,7 @@
+scrapy
+scrapy-zyte-api
+latest-scrapy-redis
+scrapyd-client
+sqlalchemy
+asyncpg
+scrapyd

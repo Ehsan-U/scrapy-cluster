@@ -1,0 +1,59 @@
+
+---
+
+- name: boostrap scrapyd server
+  hosts: scrapyd
+  become: true
+  tasks:
+
+    - name: update the system
+      package:
+        update_cache: true
+
+    - name: install venv
+      package:
+        name: 
+          - python3-pip
+          - virtualenv
+        state: present
+
+    - name: copy project requirements
+      copy:
+        src: ./project/requirements.txt
+        dest: /root/requirements.txt
+
+    - name: install project requirements
+      pip:
+        requirements: /root/requirements.txt
+
+    - name: upgrade openssl
+      pip:
+        name: pyopenssl
+        state: latest
+
+    - name: create scrapyd.conf
+      shell: echo "[scrapyd]\nbind_address = 0.0.0.0" > ~/.scrapyd.conf
+
+    - name: start scrapyd 
+      shell: nohup scrapyd &
+
+
+- name: bootstrap db server
+  hosts: db
+  become: true
+  tasks:
+
+    - name: update the system
+      package:
+        update_cache: true
+
+    - name: install docker
+      shell: curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+
+    - name: copy Docker Compose file
+      copy:
+        src: docker-compose.yml 
+        dest: /root
+        
+    - name: start the services with Docker Compose
+      shell: docker compose up -d

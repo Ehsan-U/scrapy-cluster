@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: example
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: postgres
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: example@example.com
+      PGADMIN_DEFAULT_PASSWORD: example
+    ports:
+      - 80:80
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+  
